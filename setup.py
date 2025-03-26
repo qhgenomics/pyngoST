@@ -9,7 +9,7 @@ setup(
     url='https://github.com/leosanbu/pyngoST',
     packages=['pyngoST'],
     install_requires=[
-        'urllib3==1.26.6',
+        'urllib3==1.26.19',
         'requests',
         'biopython',
         'pandas',
