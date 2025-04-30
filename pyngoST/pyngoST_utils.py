@@ -49,7 +49,8 @@ def get_args(arg):
         'outfile': arg.out_filename if arg.out_filename else None,
         'num_threads': arg.num_threads if arg.num_threads else 1,
         'only_assignccs': int(arg.only_assignccs) if arg.only_assignccs else None,
-        'only_assignsts': arg.only_assignsts if arg.only_assignsts else None
+        'only_assignsts': arg.only_assignsts if arg.only_assignsts else None,
+        'bigsdb_tokens': arg.bigsdb_tokens if arg.bigsdb_tokens else None
     }
     if args['ngstarccs'] is True and 'NG-STAR' not in args['schemes']:
         print('## NG-STAR CCs requested but not NG-STAR. Please include NG-STAR in -s\n')
