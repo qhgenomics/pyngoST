@@ -47,6 +47,7 @@ parser.add_argument('-n', '--db_name', help='Name of the folder that will contai
 parser.add_argument('-u', '--update', help='Only recreate the database pickle file', required=False, action='store_true')
 parser.add_argument('-cc', '--ngstarccsfile', help='File with the NG-STAR clonal complexes (NG-STAR CCs) database (csv) to integrate to NG-STAR profiles', required=False)
 parser.add_argument('-v', '--version', help='print version and exit.', action='store_true', required=False)
+parser.add_argument('-bsdb', '--bigsdb_tokens', help='Folder with bigsdb tokens.')
 if len(sys.argv)==1:
 	parser.print_help(sys.stderr)
 	sys.exit(0)
@@ -81,10 +82,11 @@ if __name__ == '__main__':
 	num_threads = int(args['num_threads'])
 	only_assignccs = args['only_assignccs']
 	only_assignsts = args['only_assignsts']
+	bigsdb_tokens = args['bigsdb_tokens']
 
 	## Download/Update/Load pickled database or only assign CCs
 	if download:
-		download_db(db_path, db_name, ccsfile)
+		download_db(db_path, db_name, ccsfile, bigsdb_tokens)
 	elif update:
 		update_db(db_path, ccsfile)
 	else:

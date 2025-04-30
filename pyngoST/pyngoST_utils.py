@@ -71,7 +71,7 @@ def get_input(flist, fread):
     return filelist
 
 
-def download_db(db_path, db_name, ccsfile):
+def download_db(db_path, db_name, ccsfile, bigsdb_tokens):
     if db_name and db_name not in os.listdir(os.getcwd()):
         print('## Creating updated database in', db_name)
         subprocess.run(['mkdir ' + db_name], shell=True)
@@ -79,7 +79,7 @@ def download_db(db_path, db_name, ccsfile):
     else:
         print('## Folder', db_name, 'already exists. Exiting...\n')
         sys.exit()
-    download_updated_dbs(db_path, ccsfile)
+    download_updated_dbs(db_path, ccsfile, bigsdb_tokens)
     allelesDB = read_alleles(db_path)
     make_ACautomaton(db_path, allelesDB)
     sys.exit()
@@ -105,7 +105,7 @@ def load_db(db_path):  # Load pickled database - dictionary and automaton
     return allelesDB, allelesAC
 
 
-def download_updated_dbs(db_path, ccsfile):
+def download_updated_dbs(db_path, ccsfile, bigsdb_tokens):
     if ccsfile:
         ngstarccsfile = read_ngstar_ccs(ccsfile)
     # MLST and NG-MAST v2 from PubMLST
@@ -115,12 +115,12 @@ def download_updated_dbs(db_path, ccsfile):
     pubmlstMLSTs = 'https://rest.pubmlst.org/db/pubmlst_neisseria_seqdef/schemes/1/profiles_csv'
     pubmlstNGMASTs = 'https://rest.pubmlst.org/db/pubmlst_neisseria_seqdef/schemes/71/profiles_csv'
     for g in loci:
-        subprocess.Popen('bigsdb_downloader.py --key_name PubMLST --site PubMLST --url "{}" > {}'.format(
-            pubmlstURLloci + g + '/alleles_fasta', db_path + '/' + g + '.fas'), shell=True).wait()
-    subprocess.Popen('bigsdb_downloader.py --key_name PubMLST --site PubMLST --url "{}" > {}'.format(
-        pubmlstMLSTs, db_path + '/MLST_profiles.tab'), shell=True).wait()
-    subprocess.Popen('bigsdb_downloader.py --key_name PubMLST --site PubMLST --url "{}" > {}'.format(
-        pubmlstNGMASTs, db_path + '/NGMAST_profiles.tab'), shell=True).wait()
+        subprocess.Popen('bigsdb_downloader.py --key_name PubMLST --site PubMLST --token_dir {} --url "{}" > {}'.format(
+            bigsdb_tokens, pubmlstURLloci + g + '/alleles_fasta', db_path + '/' + g + '.fas'), shell=True).wait()
+    subprocess.Popen('bigsdb_downloader.py --key_name PubMLST --site PubMLST --token_dir {} --url "{}" > {}'.format(
+        bigsdb_tokens, pubmlstMLSTs, db_path + '/MLST_profiles.tab'), shell=True).wait()
+    subprocess.Popen('bigsdb_downloader.py --key_name PubMLST --site PubMLST --token_dir {} --url "{}" > {}'.format(
+        bigsdb_tokens, pubmlstNGMASTs, db_path + '/NGMAST_profiles.tab'), shell=True).wait()
 
     # Formatting NG-MAST files
     por_fas = open(db_path + '/POR.fas', 'w+')
