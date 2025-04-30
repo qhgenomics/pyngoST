@@ -46,10 +46,15 @@ parser.add_argument('-d', '--download_db', help='Download updated allele and pro
 parser.add_argument('-n', '--db_name', help='Name of the folder that will contain the database in case a download is requested with -d (default=allelesDB in working directory)', required=False)
 parser.add_argument('-u', '--update', help='Only recreate the database pickle file', required=False, action='store_true')
 parser.add_argument('-cc', '--ngstarccsfile', help='File with the NG-STAR clonal complexes (NG-STAR CCs) database (csv) to integrate to NG-STAR profiles', required=False)
+parser.add_argument('-v', '--version', help='print version and exit.', action='store_true', required=False)
 if len(sys.argv)==1:
 	parser.print_help(sys.stderr)
 	sys.exit(0)
 arg = parser.parse_args()
+
+if arg.version:
+	print('qh_0.1')
+	sys.exit()
 
 if __name__ == '__main__':
 
